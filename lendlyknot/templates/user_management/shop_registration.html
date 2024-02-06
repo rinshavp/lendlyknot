@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <h2> Registration</h2>
+        <form method="post" action="{% url 'shopregistration' %}">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ shop_form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
+
