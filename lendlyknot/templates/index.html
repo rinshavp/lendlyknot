@@ -90,14 +90,19 @@
                     <div class="header__right">
                         <div class="header__right__auth">
 
-
-                                     <!-- Show logink and signup links if the user is not authenticated -->
-                                    <p>
-                                        <a href="{% url 'login' %}" id="loginLink" >Login</a> 
-                                        <a href="{% url 'user_registration' %}">Register</a>
-                                        <a href="{% url 'shopregistration' %}">Shop Register</a>
-                                    </p>
-                            
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.role == 'user' %}
+                            <!-- Show logout link if the user is authenticated -->
+                            <p>Hello, {{ request.session.user_name }}! <a href="{% url 'logout' %}"> Logout</a></p>
+                            {% endif %}
+                        {% else %} 
+                                 <!-- Show logink and signup links if the user is not authenticated -->
+                                <p>
+                                    <a href="{% url 'login' %}" id="loginLink" >Login</a> 
+                                    <a href="{% url 'user_registration' %}">Register</a>
+                                    <a href="{% url 'shopregistration' %}">Shop Register</a>
+                                </p>
+                        {% endif %}
                         </div> 
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>

@@ -41,12 +41,15 @@ class ShopProfile(models.Model):
 
 class Category(models.Model):
     category_name = models.CharField(max_length=200)
-    category_code = models.IntegerField(null=True)
+    category_code = models.CharField(max_length=255,unique=True , default=1)
     desc = models.TextField()
      
+    def __str__(self):
+        return self.category_name
+
 class Product(models.Model):
     shop_id = models.ForeignKey(ShopProfile, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=255)
     desc = models.TextField()
     price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)

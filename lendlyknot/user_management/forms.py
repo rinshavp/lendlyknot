@@ -20,9 +20,18 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['user'] 
+
+   
+class AddProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        exclude = ['shop_id']
+
+class UpdateProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        exclude = ['shop_id']
+
+
         
-    
-# class AddProductForm(forms.ModelForm):
-#     class Meta:
-#         model = Product
-#         fields = '__all__'
+ 

@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'lendlyknot.urls'
@@ -85,6 +86,10 @@ DATABASES = {
 # myproject/settings.py
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+# Set session timeout to 1 minutes
+SESSION_COOKIE_AGE = 60
+# Save session on every request
+SESSION_SAVE_EVERY_REQUEST = True
 
 
 
