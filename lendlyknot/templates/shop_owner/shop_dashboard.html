@@ -20,7 +20,7 @@
         <li>
             {{ product.product_name }}<br><br>
             <img src="{{ product.product_image.url }}" alt="{{ product.name }}" width="100" height="100"><br><br>
-            {{ product.desc }}
+            {{ product.product_desc }}
             <a href={% url 'update_product' pk=product.pk %}>Update</a><br>
             <a href={% url 'delete_product' pk=product.pk %}>Delete</a>
        </li> 

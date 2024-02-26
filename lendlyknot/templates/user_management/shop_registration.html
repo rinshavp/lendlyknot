@@ -1,7 +1,7 @@
 <html>
     <body>
         <h2> Registration</h2>
-        <form method="post" action="{% url 'shopregistration' %}">
+        <form method="post" action="{% url 'shop_registration' %}">
             {% csrf_token %}
             {{ user_form.as_p }}
             {{ shop_form.as_p }}
