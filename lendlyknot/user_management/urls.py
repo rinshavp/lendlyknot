@@ -16,7 +16,6 @@ urlpatterns = [
     path('display_sizes/<int:pk>/', views.display_sizes, name='display_sizes'),
     path('get_dates/<int:product_id>/<int:size_id>/', DateInfoView.as_view(), name='get_dates'),
     path('product_booking/', views.ProductBooking, name='product_booking'),
-     path('checkout/', views.checkout, name='checkout'),
 ]
 
 

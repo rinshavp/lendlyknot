@@ -91,7 +91,7 @@
                         <div class="header__right__auth">
 
                         {% if request.user.is_authenticated %}
-                            {% if request.user.role == 'user' %}
+                        {% if request.user.role == 'user' and request.user.role != 'admin' %}
                             <!-- Show logout link if the user is authenticated -->
                             <p>Hello, {{ request.session.user_name }}! <a href="{% url 'logout' %}"> Logout</a></p>
                             {% endif %}

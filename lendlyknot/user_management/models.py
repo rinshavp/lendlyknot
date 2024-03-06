@@ -77,12 +77,14 @@ class Product(models.Model):
         return self.product_name
 
 class Booking(models.Model):
+    
+
     BOOKING_CHOICES = [
         ('1', 'Booked'),
         ('2', 'Returned'),
         ('3', 'Cancelled'),
         ('4', 'Delivered'),
-        ('5', 'Cart'),
+        ('5', 'Initialised'),
     ]
     SIZE_CHOICES = [
         ('1', 'S'),
@@ -104,25 +106,36 @@ class Booking(models.Model):
     #is_confirmed = models.BooleanField(default=False) 
     booking_status =  models.CharField(max_length=2,choices=BOOKING_CHOICES,default=5)
     booked_date = models.DateTimeField(default=timezone.now)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
     # def __str__(self):
     #     return self.booked_date
+    
+# class Payment(models.Model):
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+#     razorpay_payment_id = models.CharField(max_length=255)
+#     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+#     currency = models.CharField(max_length=3, default='INR')  # Adjust based on your currency
+#     payment_status = models.BooleanField(default=False)
+#     payment_date = models.DateTimeField(default=timezone.now)
 
-class Checkout(models.Model):
+#     def __str__(self):
+#         return f"{self.user.username} - {self.booking.product.product_name} - {self.amount_paid} {self.currency}"
 
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    FirstName = models.CharField(max_length=255)
-    LastName = models.CharField(max_length=255)
-    Country = models.CharField(max_length=255)
-    StreetAddress = models.CharField(max_length=255)
-    Apartment = models.CharField(max_length=255)
-    TownCity  = models.CharField(max_length=255)
-    State = models.CharField(max_length=255)
-    Pin = models.CharField(max_length=255)
-    Phone = models.CharField(max_length=255)
-    Email = models.EmailField(unique=True)
-
-    def __str__(self):
-        return self.FirstName
+# class Checkout(models.Model):
+#     payment = models.OneToOneField(Payment, on_delete=models.CASCADE, null=True, blank=True)
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     FirstName = models.CharField(max_length=255)
+#     LastName = models.CharField(max_length=255)
+#     Country = models.CharField(max_length=255)
+#     StreetAddress = models.CharField(max_length=255)
+#     Apartment = models.CharField(max_length=255)
+#     TownCity  = models.CharField(max_length=255)
+#     State = models.CharField(max_length=255)
+#     Pin = models.CharField(max_length=255)
+#     Phone = models.CharField(max_length=255)
+#     Email = models.EmailField(unique=True)
+    

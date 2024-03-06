@@ -8,7 +8,8 @@
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ashion | Template</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Lendly Knot</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -27,7 +28,8 @@
 </head>
 
 <body>
-    {% csrf_token %}
+    
+ 
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -135,7 +137,8 @@
                     here to enter your code.</h6>
                 </div>
             </div>
-            <form action="#" class="checkout__form">
+            <form method="post" action="{% url 'payment:payment' %}" class="checkout__form">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>Billing detail</h5>
@@ -143,16 +146,18 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>First Name <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" name="first_name">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Last Name <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" name="last_name">
                                 </div>
                             </div>
-                            <div class="col-lg-12">
+                        </div>
+                    </div>
+                            {% comment %} <div class="col-lg-12">
                                 <div class="checkout__form__input">
                                     <p>Country <span>*</span></p>
                                     <input type="text">
@@ -215,7 +220,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                         <div class="col-lg-4">
                             <div class="checkout__order">
                                 <h5>Your order</h5>
@@ -225,16 +230,17 @@
                                             <span class="top__text">Product</span>
                                             <span class="top__text__right">Total</span>
                                         </li>
-                                        <li>01. Chain buck bag <span>$ 300.0</span></li>
-                                        <li>02. Zip-pockets pebbled<br /> tote briefcase <span>$ 170.0</span></li>
-                                        <li>03. Black jean <span>$ 170.0</span></li>
-                                        <li>04. Cotton shirt <span>$ 110.0</span></li>
+                                        <list>{{product_name}}<span>{{instance.amount}}</span></li>
+                                        
                                     </ul>
                                 </div>
                                 <div class="checkout__order__total">
                                     <ul>
-                                        <li>Subtotal <span>$ 750.0</span></li>
-                                        <li>Total <span>$ 750.0</span></li>
+                                        <li>Subtotal <span>{{instance.amount}}</span>
+                                            <input type="hidden" name="amount" value="{{ instance.amount }}">
+                                        </li>
+
+                                        <li>Total <span>{{instance.amount}}</span></li>
                                     </ul>
                                 </div>
                                 <div class="checkout__order__widget">
@@ -250,16 +256,16 @@
                                         <input type="checkbox" id="check-payment">
                                         <span class="checkmark"></span>
                                     </label>
-                                    <label for="paypal">
-                                        PayPal
-                                        <input type="checkbox" id="paypal">
+                                    <label for="razorpay">
+                                        Razorpay
+                                        <input type="checkbox" id="razorpay">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
                                 <button type="submit" class="site-btn">Place oder</button>
                             </div>
                         </div>
-                    </div>
+                        
                 </form>
             </div>
         </section>
@@ -404,7 +410,7 @@
             </div>
         </div>
         <!-- Search End -->
-
+        
         <!-- Js Plugins -->
         <script src="{% static 'user/js/jquery-3.3.1.min.js' %}"></script>
         <script src="{% static 'user/js/bootstrap.min.js' %}"></script>

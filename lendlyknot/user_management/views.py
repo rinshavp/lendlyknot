@@ -3,7 +3,7 @@ import json
 from django.http import  JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from .serializers import BookingSerializer
-from .forms import CheckoutForm, UpdateProductForm, UserProfileForm, UserRegistrationForm, ShopRegistrationForm, AddProductForm
+from .forms import  UpdateProductForm, UserProfileForm, UserRegistrationForm, ShopRegistrationForm, AddProductForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from . models import Booking, CustomUser, Product, ShopProfile
@@ -178,11 +178,14 @@ def shop_product(request):
 def ProductBooking(request):
     serializer = BookingSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        #serializer.save()
+        instance = serializer.save()
+        #return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # Assuming the instance has an 'id' field you want to use to show details
+        return Response({'redirect_url': f'/payment/checkout/{instance.id}/'})
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+         
 
 def display_sizes(request, pk):
     
@@ -242,14 +245,6 @@ class DateInfoView(APIView):
         return JsonResponse({'fully_booked_dates': fully_booked_dates})
 
 
-def checkout(request):
-   if request.method == 'POST':
-        form = CheckoutForm(request.data)
-        if form.is_valid():
-            form.save
-            return render(request, 'bookings/checkout.html', {'form': form})
-        else:
-            form = CheckoutForm()
-        return render(request, 'bookings/checkout.html', {'form': form})
+
 
             

@@ -223,7 +223,7 @@
                         </div>
                         <div class="product__details__button">
                             <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
-                            <a href="{% url 'checkout' %}" class="cart-btn" onclick="bookingForm()"><span class="icon_bag_alt"></span> Book Now</a>
+                            <a href="#" class="cart-btn" onclick="bookingForm()"><span class="icon_bag_alt"></span> Book Now</a>
                         </div>
                         {% comment %} <div class="product__details__widget">
                             <ul>
@@ -636,6 +636,8 @@
             var quantity = document.getElementById('quantity').value;
             var product_id = "{{ product.id }}"
             var user_id = "{{ request.session.user_id }}"
+            var product_price = "{{ product.price_per_day }}"
+            total_amount = product_price*quantity
             
             var formData = {
                 'user': user_id,
@@ -643,8 +645,10 @@
                 'start_date': fromDate,
                 'end_date': toDate,
                 'quantity_rented': quantity,
-                'booked_size': selectedSize
+                'booked_size': selectedSize,
+                'amount': total_amount
             };
+           
            
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -657,12 +661,14 @@
                 },
                 body: JSON.stringify(formData)
             })
+            
             .then(response => response.json())
             .then(data => {
-                // Handle the response from the server as needed
-                console.log(data);
+                //console.log(data);
+                // Redirect to the new page using the URL from the response
+                window.location.href = data.redirect_url;
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error:', error);
             });
         }

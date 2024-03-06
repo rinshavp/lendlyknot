@@ -1,7 +1,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import  CustomUser, Product,ShopProfile, UserProfile, Checkout
+from .models import  CustomUser, Product,ShopProfile, UserProfile
 
 class UserRegistrationForm(UserCreationForm):
    
@@ -31,10 +31,7 @@ class UpdateProductForm(forms.ModelForm):
         model = Product
         exclude = ['shop_id']
 
-class CheckoutForm(forms.ModelForm):
-    class Meta:
-        model = Checkout
-        exclude = ['user','product']
+
 
 
         

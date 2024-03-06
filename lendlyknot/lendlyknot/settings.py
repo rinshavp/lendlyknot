@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_management',
-    'payments',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +143,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_management.CustomUser'
 # LOGIN_URL = 'login'
 # LOGOUT_URL = 'logout'
+RAZORPAY_KEY_ID = "rzp_test_s9Ul5PQ56uqlRB"
+RAZORPAY_KEY_SECRET = "cnWalVr48o678mtVGEhYBDyI"
