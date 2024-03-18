@@ -143,5 +143,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_management.CustomUser'
 # LOGIN_URL = 'login'
 # LOGOUT_URL = 'logout'
+
+# Razorpay settings
 RAZORPAY_KEY_ID = "rzp_test_s9Ul5PQ56uqlRB"
 RAZORPAY_KEY_SECRET = "cnWalVr48o678mtVGEhYBDyI"
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6380/0'
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace 'smtp.example.com' with your SMTP server host
+EMAIL_PORT = 587  # Use the appropriate port for your SMTP server (587 is commonly used for TLS)
+EMAIL_USE_TLS = True  # Enable TLS (Transport Layer Security) encryption
+EMAIL_HOST_USER = 'rinshavp2000@gmail.com'  # Replace with your SMTP username
+EMAIL_HOST_PASSWORD = ' rclc zkud vkmv ptuu'  # Replace with your SMTP password
