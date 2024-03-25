@@ -70,19 +70,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='checkout',
             name='booking',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='user_management.booking'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user_management.booking'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='checkout',
             name='product',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='user_management.product'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user_management.product'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='checkout',
             name='user',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
     ]

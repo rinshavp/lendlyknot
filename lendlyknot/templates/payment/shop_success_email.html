@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: auto; padding: 20px; }
+        .header { background: #f4f4f4; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        .footer { background: #f4f4f4; padding: 20px; text-align: center; }
+        .order-summary { background: #eee; padding: 10px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Your Booking with Lendly Knot has been Confirmed!</h2>
+        </div>
+        <div class="content">
+            <p>Hello {{ shop_name }},</p>
+            <p>We are currently processing your new booking and will let you know once.</p>
+            <h3>Booking Summary:</h3>
+            <div class="order-summary">
+                <table>
+                    <tr>
+                        
+                        <th>Order ID</th>
+                        <th>Booked Date</th>
+                        <th>Price</th>
+                        <th>Date Duration</th>
+                        
+                    </tr>
+                  
+                    <tr>
+                        
+                        <td>{{ order_id }}</td>
+                        <td>{{ booked_date }}</td>
+                        <td>{{ amount }}</td>
+                        <td>{{start_date }} - {{end_date}}</td>
+                        
+                    </tr>
+                   
+                </table>
+            </div>
+            <p>Your order is booked for {{ no_of_days }} days.</p>
+        <p>If you have any questions, feel free to contact us at {{ email }}.</p>
+        </div>
+        <div class="footer">
+            <p>Thank you for shopping with us!</p>
+            <p>Lendly Knot</p>
+        </div>
+    </div>
+</body>
+</html>cd ..
+cdc

@@ -1,4 +1,5 @@
 from collections import defaultdict
+import datetime
 import json
 from django.http import  JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
@@ -78,6 +79,7 @@ def shop_registration(request):
         shop_form = ShopRegistrationForm()
 
     return render(request, 'user_management/shop_registration.html', {'user_form': user_form, 'shop_form': shop_form})
+
 
 def custom_login(request):
     #Check if the form is being submitted (POST request)
@@ -167,11 +169,12 @@ def delete_product(request, pk):
     #  Render a confirmation page for deletion (delete_product.html)
     return render(request, 'shop_owner/delete_product.html', {'product': product})
 
+
 def shop_product(request):
     products = Product.objects.all()
     return render(request, 'user_management/shop.html', {'products':products})
 
-#------------------------BOOKING-------------------------------------------------------
+#--------------------------------------------BOOKING-------------------------------------------------------
 
 
 @api_view(['POST'])
@@ -210,8 +213,7 @@ def display_sizes(request, pk):
         'available_sizes': available_sizes,
     }
     return render(request, 'bookings/product_details.html', context)
-    #return render(request, 'bookings/product_booking.html', context)
-
+   
 #class based view
 
 class DateInfoView(APIView):
@@ -241,7 +243,7 @@ class DateInfoView(APIView):
         product_total_quantity = getattr(product, size_mapping.get(size_id, 'size_xxxl_qty'))
         #Determine which dates are fully booked
         fully_booked_dates = [str(day) for day, quantity in date_quantities.items() if quantity >= product_total_quantity]
-        
+       
         return JsonResponse({'fully_booked_dates': fully_booked_dates})
 
 

@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="{% static 'user/css/owl.carousel.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'user/css/slicknav.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'user/css/style.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'user/css/login.css' %}" type="text/css">
+    
 </head>
 
 <body>
@@ -96,12 +98,14 @@
                             <p>Hello, {{ request.session.user_name }}! <a href="{% url 'logout' %}"> Logout</a></p>
                             {% endif %}
                         {% else %} 
-                                 <!-- Show logink and signup links if the user is not authenticated -->
-                                <p>
-                                    <a href="{% url 'login' %}" id="loginLink" >Login</a> 
+                                 <!-- Show logink and signup links if the user is not authenticated,
+                                      login as pop-up, initially this modal div is hidden when click on login link it is displaying -->
+                               <p>
+                                    <a href="#" id="loginBtn">Login</a> 
+                                        
                                     <a href="{% url 'user_registration' %}">Register</a>
                                     <a href="{% url 'shop_registration' %}">Shop Register</a>
-                                </p>
+                                <p>
                         {% endif %}
                         </div> 
                         <ul class="header__right__widget">
@@ -129,7 +133,7 @@
             <div class="row">
                 <div class="col-lg-6 p-0">
                     <div class="categories__item categories__large__item set-bg"
-                    data-setbg="{% static 'user/img/categories/category-1.jpg' %}">
+                    data-setbg="{% static 'user/img/categories/static.jpg' %}">
                     <div class="categories__text">
                         <h1>Women’s fashion</h1>
                         <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
@@ -673,6 +677,28 @@
 </div>
 <!-- Search End -->
 
+<!-- Login  pop up div session start  -->
+<div id="loginModal" class="loginpopup">
+    <div class="loginpopup-content">
+        <div>fsg</div>
+        {% comment %} <div style="background-image: url('{% static 'user/img/banner/banner1.png' %}')"></div> {% endcomment %}
+        <div>
+            <span class="close"><b>&times;</b></span>
+            <form class="login-form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                {% comment %} <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div> {% endcomment %}
+                <input type="text" id="username" name="username" placeholder="username" required><br>
+                <input type="password" id="password" name="password"  placeholder="password"required><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Login  pop up div session ends  -->
+{% comment %} // Check if there's a login failed session variable and display error message if it exists {% endcomment %}
+
 <!-- Js Plugins -->
 <script src="{% static 'user/js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'user/js/bootstrap.min.js' %}"></script>
@@ -684,6 +710,8 @@
 <script src="{% static 'user/js/owl.carousel.min.js' %}"></script>
 <script src="{% static 'user/js/jquery.nicescroll.min.js' %}"></script>
 <script src="{% static 'user/js/main.js' %}"></script>
+<script src="{% static 'user/js/login.js' %}"></script>
+
 
 </body>
 

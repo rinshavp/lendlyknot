@@ -1,0 +1,42 @@
+.registration-form .form-field {
+    padding-top:30px;
+    margin-bottom: 20px;
+    width: 400px;
+    margin-left:200px;
+    
+}
+
+.registration-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    
+}
+.registration-form input[type="text"],
+.registration-form textarea,
+.registration-form input[type="email"],
+.registration-form input[type="password"] {
+    height: 50px;
+	width: 100%;
+	border: 1px solid #e1e1e1;
+	border-radius: 2px;
+	margin-bottom: 25px;
+	font-size: 14px;
+	padding-left: 20px;
+	color: #666666;
+}
+
+.registration-form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.registration-form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* You can add more specific styling for individual fields here */
