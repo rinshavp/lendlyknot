@@ -19,21 +19,56 @@
 		
 		border: 1px solid #f1f1f1;;
 		width: 50%;
-		height: 50%;
+		height: 400px;
 		display: flex;
 		
 	}
 	
 	.loginpopup-content > div:first-child {
-		background-color: #130a05;
+		background-color: rgba(252, 204, 142, 1);
+		background: linear-gradient(to right, rgba(252, 204, 142, 1) 0%, rgba(212, 149, 67, 1) 100%);
+		background: -webkit-linear-gradient(left, rgba(252, 204, 142, 1) 0%, rgba(212, 149, 67, 1) 100%);
 		background-size: cover; /* Cover the entire container */
 		background-position: center; /* Center the background image */
 		font-size:40px;
 		width: 50%;
 	}
+	.login_container {
+        text-align: center;
+		margin: 20px;
+		padding-top:60px;
+		
+    }
 	
+	.services__item {
+		border-bottom: 1px solid #ccc; /* Add a border-bottom to all services items */
+		padding-bottom: 10px; /* Optional: Add some padding between items */
+	}
+	
+	.services__item:last-child {
+		border-bottom: none; /* Remove border-bottom from the last services item */
+	}
+
+	.services__item i {
+		padding-left: 50px; /* Adjust margin as needed */
+		color : white;
+	}
+	.services__item h6 {
+		 /* Adjust margin as needed */
+		color : white;
+	}
+	.services__item p {
+		/* Adjust margin as needed */
+	   color : white;
+   }
+	
+	.login_heading {
+		font-weight: bold;
+		font-size: 24px;
+	}
+
 	.loginpopup-content > div:not(:first-child) {
-		background-color: #7f2121;
+		background-color: white;
 		/* margin: 10px; */
 		/* padding-top: 20px; */
 		/* font-size: 30px; */

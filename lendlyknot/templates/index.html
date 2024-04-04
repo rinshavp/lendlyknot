@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Lendly Knot</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -27,8 +28,8 @@
     <link rel="stylesheet" href="{% static 'user/css/login.css' %}" type="text/css">
     
 </head>
-
 <body>
+    
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -40,7 +41,7 @@
         <div class="offcanvas__close">+</div>
         <ul class="offcanvas__widget">
             <li><span class="icon_search search-switch"></span></li>
-            <li><a href="#"><span class="icon_heart_alt"></span>
+            <li><a href="#" id="wishlist"><span class="icon_heart_alt"></span>
                 <div class="tip">2</div>
             </a></li>
             <li><a href="#"><span class="icon_bag_alt"></span>
@@ -72,19 +73,11 @@
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="{% url 'home' %}">Home</a></li>
-                            <li><a href="#">Women’s</a></li>
-                            <li><a href="#">Men’s</a></li>
+                            <li><a href="{% url 'shop_product' %}?category_type=W">Women's</a></li>
+                            <li><a href="{% url 'shop_product' %}?category_type=M">Men's</a></li>
+                            <li><a href="{% url 'shop_product' %}?category_type=A">Accessories</a></li>
                             <li><a href="{% url 'shop_product' %}">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="./product-details.html">Product Details</a></li>
-                                    <li><a href="./shop-cart.html">Shop Cart</a></li>
-                                    <li><a href="./checkout.html">Checkout</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./blog.html">Blog</a></li>
-                            <li><a href="./contact.html">Contact</a></li>
+                            
                         </ul>
                     </nav>
                 </div>
@@ -93,7 +86,7 @@
                         <div class="header__right__auth">
 
                         {% if request.user.is_authenticated %}
-                        {% if request.user.role == 'user' and request.user.role != 'admin' %}
+                        {% if request.user.role == 'user'%}
                             <!-- Show logout link if the user is authenticated -->
                             <p>Hello, {{ request.session.user_name }}! <a href="{% url 'logout' %}"> Logout</a></p>
                             {% endif %}
@@ -110,7 +103,7 @@
                         </div> 
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span>
+                            <li><a href="{% url 'get_wishlist' %}"><span class="icon_heart_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
                             <li><a href="#"><span class="icon_bag_alt"></span>
@@ -196,16 +189,6 @@
                     <h4>New product</h4>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-8">
-                <ul class="filter__controls">
-                    <li class="active" data-filter="*">All</li>
-                    <li data-filter=".women">Women’s</li>
-                    <li data-filter=".men">Men’s</li>
-                    <li data-filter=".kid">Kid’s</li>
-                    <li data-filter=".accessories">Accessories</li>
-                    <li data-filter=".cosmetic">Cosmetics</li>
-                </ul>
-            </div>
         </div>
 
 <div class="row property__gallery">
@@ -220,7 +203,7 @@
                     <ul class="product__hover">
                        
                         <li><a href="{{ product.product_image.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                        <li><a href="#" class="wishlist-link" data-user-id="{{ user.id }}" data-product-id="{{ product.id }}"><span class="icon_heart_alt"></a></li>
                         <li><a href="{% url 'display_sizes' pk=product.pk %}"><span class="icon_bag_alt"></span></a></li>
                     </ul>
                 </div>
@@ -283,181 +266,7 @@
     </div>
 </section>
 <!-- Banner Section End -->
-
-<!-- Trend Section Begin -->
-<section class="trend spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Hot Trend</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/ht-1.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Chain bucket bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/ht-2.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Pendant earrings</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/ht-3.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Best seller</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/bs-1.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/bs-2.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Zip-pockets pebbled tote <br />briefcase</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/bs-3.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Round leather bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Feature</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/f-1.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Bow wrap skirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/f-2.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Metallic earrings</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'user/img/trend/f-3.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Flap cross-body bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Trend Section End -->
-
+<br><br>
 <!-- Discount Section Begin -->
 <section class="discount">
     <div class="container">
@@ -492,7 +301,7 @@
                             <p>Sec</p>
                         </div>
                     </div>
-                    <a href="#">Shop now</a>
+                    <a href="{% url 'shop_product' %}">Shop now</a>
                 </div>
             </div>
         </div>
@@ -545,39 +354,7 @@
                 <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-1.jpg' %}">
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-2.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-3.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-4.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-5.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
+                        <a href="https://www.instagram.com/rinsha_rnz/?utm_source=qr&igsh=MTM2bTJjMWNwNGxp">@ lendlyKnot</a>
                     </div>
                 </div>
             </div>
@@ -585,7 +362,39 @@
                 <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-6.jpg' %}">
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
+                        <a href="https://www.instagram.com/rinsha_rnz/?utm_source=qr&igsh=MTM2bTJjMWNwNGxp">@ lendlyKnot</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-2.jpg' %}">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="https://www.instagram.com/rinsha_rnz/?utm_source=qr&igsh=MTM2bTJjMWNwNGxp">@ lendlyKnot</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-4.jpg' %}">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="https://www.instagram.com/rinsha_rnz/?utm_source=qr&igsh=MTM2bTJjMWNwNGxp">@ lendlyKnot</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-5.jpg' %}">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="https://www.instagram.com/rinsha_rnz/?utm_source=qr&igsh=MTM2bTJjMWNwNGxp">@ lendlyKnot</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="{% static 'user/img/instagram/insta-8.jpg' %}">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="https://www.instagram.com/rinsha_rnz/?utm_source=qr&igsh=MTM2bTJjMWNwNGxp">@ lendlyKnot</a>
                     </div>
                 </div>
             </div>
@@ -596,71 +405,13 @@
 
 <!-- Footer Section Begin -->
 <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-7">
-                <div class="footer__about">
-                    <div class="footer__logo">
-                        <a href="./index.html"><img src="{% static 'user/img/logo.jpeg' %}" alt=""></a>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    cilisis.</p>
-                    <div class="footer__payment">
-                        <a href="#"><img src="{% static 'user/img/payment/payment-1.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'user/img/payment/payment-2.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'user/img/payment/payment-3.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'user/img/payment/payment-4.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'user/img/payment/payment-5.png' %}" alt=""></a>
-                    </div>
-                </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            <div class="footer__copyright__text">
+                <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | Lendly Knot <i class="fa fa-heart" aria-hidden="true"></i> by <a href="http://127.0.0.1:8000/" target="_blank">Lendly</a></p>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-5">
-                <div class="footer__widget">
-                    <h6>Quick links</h6>
-                    <ul>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Blogs</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-4">
-                <div class="footer__widget">
-                    <h6>Account</h6>
-                    <ul>
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">Orders Tracking</a></li>
-                        <li><a href="#">Checkout</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-8 col-sm-8">
-                <div class="footer__newslatter">
-                    <h6>NEWSLETTER</h6>
-                    <form action="#">
-                        <input type="text" placeholder="Email">
-                        <button type="submit" class="site-btn">Subscribe</button>
-                    </form>
-                    <div class="footer__social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-pinterest"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                <div class="footer__copyright__text">
-                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-                </div>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            </div>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
         </div>
     </div>
 </footer>
@@ -670,8 +421,9 @@
 <div class="search-model">
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
+        <form class="search-model-form"  action="{% url 'shop_product' %}" method ="GET">
+            <input type="text" name = "query" id="search-input" placeholder="Search here.....">
+            
         </form>
     </div>
 </div>
@@ -680,15 +432,35 @@
 <!-- Login  pop up div session start  -->
 <div id="loginModal" class="loginpopup">
     <div class="loginpopup-content">
-        <div>fsg</div>
+        <div>
+                <div class="login_container">
+                    <div class="services__item">
+                        <i class="fa fa-car"></i>
+                        <h6>Free Shipping</h6>
+                        <p>For all oder over $99</p>
+                    </div>
+                    <div class="services__item">
+                        <i class="fa fa-support"></i>
+                        <h6>Online Support 24/7</h6>
+                        <p>Dedicated support</p>
+                    </div> 
+                    <div class="services__item">
+                        <i class="fa fa-headphones"></i>
+                        <h6>Payment Secure</h6>
+                        <p>100% secure payment</p>
+                    </div>
+                </div>
+           
+        </div>
+        
         {% comment %} <div style="background-image: url('{% static 'user/img/banner/banner1.png' %}')"></div> {% endcomment %}
         <div>
+            
             <span class="close"><b>&times;</b></span>
+            
             <form class="login-form" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
-                {% comment %} <div class="alert alert-danger" role="alert">
-                    {{ message }}
-                </div> {% endcomment %}
+                <h6 class = "login_heading">Login with Lendly!</h6><br><br>
                 <input type="text" id="username" name="username" placeholder="username" required><br>
                 <input type="password" id="password" name="password"  placeholder="password"required><br>
                 <button type="submit">Login</button>
@@ -696,8 +468,8 @@
         </div>
     </div>
 </div>
+
 <!-- Login  pop up div session ends  -->
-{% comment %} // Check if there's a login failed session variable and display error message if it exists {% endcomment %}
 
 <!-- Js Plugins -->
 <script src="{% static 'user/js/jquery-3.3.1.min.js' %}"></script>
@@ -711,6 +483,7 @@
 <script src="{% static 'user/js/jquery.nicescroll.min.js' %}"></script>
 <script src="{% static 'user/js/main.js' %}"></script>
 <script src="{% static 'user/js/login.js' %}"></script>
+<script src="{% static 'user/js/wishlist.js' %}"></script>
 
 
 </body>

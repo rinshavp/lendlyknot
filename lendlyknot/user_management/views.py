@@ -3,21 +3,22 @@ import datetime
 import json
 from django.http import  JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from .serializers import BookingSerializer
+from .serializers import BookingSerializer, WishlistSerializer
 from .forms import  UpdateProductForm, UserProfileForm, UserRegistrationForm, ShopRegistrationForm, AddProductForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from . models import Booking, CustomUser, Product, ShopProfile
+from . models import Booking, Category, CustomUser, Product, ShopProfile, Wishlist
 from rest_framework.decorators import api_view
 from datetime import date, timedelta
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, views
+from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
-   products = Product.objects.order_by('-created_at')[:8]
-   return render(request, 'index.html',{'products':products})
+    products = Product.objects.order_by('-created_at')[:8]
+    return render(request, 'index.html',{'products':products})
 
 #------------------------------USER AUTHENTICATION-------------------------------
 
@@ -96,9 +97,11 @@ def custom_login(request):
             if user.role == 'shop_owner':
                 shop = ShopProfile.objects.get(user=user)
                 request.session['shop_id'] = shop.id
-                return redirect('shopdashboard')  # Replace with your shop owner dashboard URL
+                return redirect('shopdashboard') 
+            elif user.role == 'user':
+                return redirect('home')
             else:
-                return redirect('home')  # Replace with your user dashboard URL
+                return redirect('admin')
         else:
             messages.error(request, 'Invalid login credentials.')
 
@@ -117,7 +120,10 @@ def shopdashboard(request):
     shop_id = request.session.get('shop_id')
     #Displaying product based on the shop_id
     products = Product.objects.filter(shop_id=shop_id)
-    
+    query = request.GET.get('query')
+    if query:
+        products = products.filter(product_name__icontains=query) | products.filter(product_desc__icontains=query)
+
     return render(request, 'shop_owner/shop_dashboard.html',{'products':products,})
 
 def add_product(request):
@@ -172,7 +178,64 @@ def delete_product(request, pk):
 
 def shop_product(request):
     products = Product.objects.all()
+
+    # Get the category type from the query parameters
+    category_type = request.GET.get('category_type')
+    if category_type:
+        # Filter products based on the category type
+        products = products.filter(category__category_type=category_type)
+
+    #Searching based on query
+    query = request.GET.get('query')
+    if query:
+        products = products.filter(product_name__icontains=query) | products.filter(product_desc__icontains=query)
     return render(request, 'user_management/shop.html', {'products':products})
+
+def women(request):
+    products = Category.objects.filter(category_type='W')
+    return render(request, 'user_management/shop.html', {'products':products})
+
+# Wish list functionality by restapi
+@api_view(['GET'])
+def get_wishlist(request):
+    wishlist = Wishlist.objects.filter(user=request.user)
+    wishlist_data = []
+    
+    for item in wishlist:
+        product = Product.objects.get(id=item.product_id)
+        wishlist_data.append({
+            'user_id': item.user_id,
+            'product_id': item.id,
+            'product_name': product.product_name,  
+            'product_image': product.product_image,
+            'price_per_day': product.price_per_day,
+        })
+    return render(request, 'wishlist/wishlist.html', {'wishlist': wishlist_data})
+
+@api_view(['POST'])
+def add_wishlist(request):
+    serializer = WishlistSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors)  # Print validation errors for debugging
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['DELETE'])
+def remove_wishlist(request):
+    if request.method == 'DELETE':
+        # Assuming the request contains the product ID to remove from the wishlist
+        product_id = request.data.get('product_id')
+        
+        # Fetch the wishlist item
+        try:
+            wishlist_item = Wishlist.objects.get(user=request.user, product_id=product_id)
+        except Wishlist.DoesNotExist:
+            return Response({"message": "Wishlist item not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Delete the wishlist item
+        wishlist_item.delete()
 
 #--------------------------------------------BOOKING-------------------------------------------------------
 
@@ -181,9 +244,9 @@ def shop_product(request):
 def ProductBooking(request):
     serializer = BookingSerializer(data=request.data)
     if serializer.is_valid():
-        #serializer.save()
+        # serializer.save()
         instance = serializer.save()
-        #return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response(serializer.data, status=status.HTTP_201_CREATED)
         # Assuming the instance has an 'id' field you want to use to show details
         return Response({'redirect_url': f'/payment/checkout/{instance.id}/'})
     else:

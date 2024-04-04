@@ -121,8 +121,14 @@ def order_details(request):
             status=PaymentStatus.SUCCESS,
             product__shop_id__user=request.user
         )
+
+        #Searching based on query
+        query = request.GET.get('query')
+        if query:
+            checkout_instance = checkout_instance.filter(order_id__icontains=query)
         return render(request, 'shop_owner/order_details.html', {'checkout_instance': checkout_instance})
-    
+   
+
     # Handle unauthenticated user
     return render(request, 'shop_owner/order_details.html', {'message': 'You must be logged in to view this page'})
 
@@ -133,6 +139,11 @@ def order_user_details(request, order_id):
         #  ForeignKey relation to the user model in the Checkout model
         user_id = checkout_instance.user_id
         user_profile_details = UserProfile.objects.get(user_id=user_id)
+        
+        #Searching based on query
+        query = request.GET.get('query')
+        if query:
+            checkout_instance = checkout_instance.filter(order_id__icontains=query)
         return render(request, 'shop_owner/order_user_details.html', {'checkout_instance': checkout_instance, 'user_profile_details':user_profile_details})
 
 
